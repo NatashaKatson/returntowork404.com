@@ -384,7 +384,7 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 5rem 1.5rem;
+            padding: 5rem 1.5rem 2rem;
             background-color: var(--charcoal);
             position: relative;
             overflow: hidden;
@@ -407,6 +407,12 @@
         .punchline-content {
             position: relative;
             z-index: 1;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
         }
 
         .punchline-section h2 {
@@ -439,10 +445,10 @@
         }
 
         .footer {
-            position: absolute;
-            bottom: 2rem;
-            left: 0;
-            right: 0;
+            position: relative;
+            z-index: 1;
+            margin-top: auto;
+            padding-top: 2rem;
             text-align: center;
             color: rgba(248, 245, 240, 0.5);
             font-size: 0.875rem;
@@ -487,16 +493,11 @@
             animation: fadeIn 0.6s ease-out 1.4s forwards;
         }
 
-        .footer.visible {
-            animation: fadeIn 0.6s ease-out 1.6s forwards;
-        }
-
         /* Initially hide animated elements */
         .punchline-section h2,
         .punchline-line,
         .good-luck,
-        .sparkles,
-        .punchline-section .footer {
+        .sparkles {
             opacity: 0;
         }
 
@@ -580,7 +581,7 @@
             <p class="good-luck fade-in">Good luck</p>
             <div class="sparkles fade-in">✨</div>
         </div>
-        <p class="footer fade-in">Made with 💕 and tiredness</p>
+        <p class="footer">Made with 💕 and tiredness</p>
     </section>
 
     <script>
