@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Return to Work - A Survival Guide for Returning Parents</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap" rel="stylesheet">
+
+    <!-- Google Analytics - Replace GA_MEASUREMENT_ID with your actual ID -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+    </script> -->
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Playfair Display', Georgia, serif;
+            background-color: #F8F5F0;
+            color: #2D2420;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            background-color: #F8F5F0;
+        }
+
+        /* Decorative Circles */
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .circle-pink {
+            width: 120px;
+            height: 120px;
+            background-color: #F4BFB3;
+            top: 60px;
+            left: 40px;
+        }
+
+        .circle-sage {
+            width: 60px;
+            height: 60px;
+            background-color: #C5D4C0;
+            top: 120px;
+            right: 80px;
+        }
+
+        .circle-cream {
+            width: 180px;
+            height: 180px;
+            background-color: #F5E6D3;
+            bottom: 80px;
+            right: 60px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: rgba(224, 123, 84, 0.1);
+            color: #E07B54;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 500;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            z-index: 1;
+        }
+
+        .hero h1 .accent {
+            color: #E07B54;
+            font-style: italic;
+        }
+
+        .hero .subtitle {
+            font-size: 1.25rem;
+            color: #8B8680;
+            max-width: 600px;
+            line-height: 1.6;
+            z-index: 1;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            animation: bounce 2s infinite;
+        }
+
+        .mouse {
+            width: 26px;
+            height: 42px;
+            border: 2px solid #C5C0BB;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .mouse::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 8px;
+            background-color: #E07B54;
+            border-radius: 2px;
+            animation: scroll-wheel 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        @keyframes scroll-wheel {
+            0% { opacity: 1; top: 8px; }
+            100% { opacity: 0; top: 20px; }
+        }
+
+        /* AI Section */
+        .ai-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            position: relative;
+            background-color: #F3EEE8;
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .floating-text {
+            position: absolute;
+            font-size: 2rem;
+            color: #E0DBD5;
+            font-weight: 500;
+            opacity: 0.5;
+        }
+
+        .floating-text.gpt { top: 45%; left: 5%; }
+        .floating-text.ai { top: 35%; right: 25%; }
+        .floating-icon {
+            position: absolute;
+            font-size: 1.5rem;
+            opacity: 0.3;
+        }
+        .floating-icon:nth-child(3) { top: 20%; right: 15%; }
+        .floating-icon:nth-child(4) { top: 30%; left: 30%; }
+        .floating-icon:nth-child(5) { top: 50%; right: 10%; }
+        .floating-icon:nth-child(6) { bottom: 30%; left: 8%; }
+
+        .ai-section .question {
+            font-size: 1.25rem;
+            color: #9B9590;
+            margin-bottom: 1rem;
+        }
+
+        .ai-section h2 {
+            font-size: clamp(2rem, 6vw, 4rem);
+            font-weight: 500;
+            margin-bottom: 3rem;
+        }
+
+        .ai-section h2 .accent {
+            color: #E07B54;
+        }
+
+        .speech-bubble {
+            background: white;
+            padding: 2rem 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            max-width: 500px;
+            margin-top: 2rem;
+        }
+
+        .speech-bubble p {
+            font-size: 1.5rem;
+            font-style: italic;
+            color: #2D2420;
+        }
+
+        /* Catch Up Section */
+        .catchup-section {
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            background-color: #F8F5F0;
+        }
+
+        .catchup-section .label {
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            color: #9B9590;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .catchup-section h2 {
+            font-size: clamp(2rem, 6vw, 4rem);
+            font-weight: 500;
+            position: relative;
+            display: inline-block;
+        }
+
+        .catchup-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background-color: #E07B54;
+        }
+
+        /* Dark Section */
+        .dark-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            background-color: #2D2420;
+            position: relative;
+        }
+
+        .dark-section h2 {
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 500;
+            color: white;
+            position: relative;
+            display: inline-block;
+            letter-spacing: 0.05em;
+        }
+
+        .dark-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 3px;
+            background-color: #E07B54;
+        }
+
+        .dark-section .good-luck {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: #E07B54;
+            font-style: italic;
+            margin-top: 3rem;
+        }
+
+        .sparkles {
+            font-size: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 40px;
+            color: #6B6560;
+            font-size: 0.9rem;
+        }
+
+        .footer span {
+            color: #E07B54;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .circle-pink {
+                width: 80px;
+                height: 80px;
+                top: 30px;
+                left: 20px;
+            }
+            .circle-sage {
+                width: 40px;
+                height: 40px;
+                top: 80px;
+                right: 40px;
+            }
+            .circle-cream {
+                width: 120px;
+                height: 120px;
+                bottom: 60px;
+                right: 20px;
+            }
+            .speech-bubble {
+                padding: 1.5rem 2rem;
+            }
+            .speech-bubble p {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="circle circle-pink"></div>
+        <div class="circle circle-sage"></div>
+        <div class="circle circle-cream"></div>
+
+        <span class="badge">A survival guide for returning parents</span>
+        <h1>Catch up after<br><span class="accent">mat leave</span></h1>
+        <p class="subtitle">Baby is out of the house (daycare / nanny) and you are back to reality...</p>
+
+        <div class="scroll-indicator">
+            <div class="mouse"></div>
+        </div>
+    </section>
+
+    <!-- AI Section -->
+    <section class="ai-section">
+        <div class="floating-elements">
+            <span class="floating-text gpt">GPT</span>
+            <span class="floating-text ai">AI</span>
+            <span class="floating-icon">🤖</span>
+            <span class="floating-icon">🤖</span>
+            <span class="floating-icon">🤖</span>
+            <span class="floating-icon">🤖</span>
+        </div>
+
+        <p class="question">...but the world has changed??</p>
+        <h2><span class="accent">AI</span> everywhere.</h2>
+
+        <div class="speech-bubble">
+            <p>Do you even have a job anymore?!</p>
+        </div>
+    </section>
+
+    <!-- Catch Up Section -->
+    <section class="catchup-section">
+        <p class="label">Don't Worry</p>
+        <h2>Here's how to catch up</h2>
+    </section>
+
+    <!-- Dark Section -->
+    <section class="dark-section">
+        <h2>YOU CAN'T</h2>
+        <p class="good-luck">Good luck</p>
+        <div class="sparkles">✨</div>
+
+        <p class="footer">Made with <span>💕</span> and tiredness</p>
+    </section>
+</body>
+</html>
