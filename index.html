@@ -454,6 +454,24 @@
             font-size: 0.875rem;
         }
 
+        .footer a.bmc-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding: 0.75rem 1.5rem;
+            background-color: #FF5F5F;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .footer a.bmc-link:hover {
+            background-color: #e54d4d;
+            transform: translateY(-2px);
+        }
+
         /* Staggered animations for punchline */
         .punchline-section h2.visible {
             animation: scaleSpring 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
@@ -581,7 +599,10 @@
             <p class="good-luck fade-in">Good luck</p>
             <div class="sparkles fade-in">✨</div>
         </div>
-        <p class="footer">Made with 💕 and tiredness</p>
+        <div class="footer">
+            <a href="https://www.buymeacoffee.com/natashakatson" target="_blank" class="bmc-link">☕ Buy me a coffee</a>
+            <p>Made with 💕 and tiredness</p>
+        </div>
     </section>
 
     <script>
@@ -620,5 +641,6 @@
             observer.observe(el);
         });
     </script>
+
 </body>
 </html>
