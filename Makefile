@@ -50,9 +50,9 @@ clean:
 # Local development (requires Go)
 dev:
 	go get whatdidimiss
-	@if [ -z "$$CLAUDE_API_KEY" ]; then \
-		echo "Error: CLAUDE_API_KEY not set"; \
-		echo "Run: export CLAUDE_API_KEY=your-key"; \
+	@if [ -z "$$GEMINI_API_KEY" ]; then \
+		echo "Error: GEMINI_API_KEY not set"; \
+		echo "Run: export GEMINI_API_KEY=your-key"; \
 		exit 1; \
 	fi
 	go run .
@@ -80,7 +80,7 @@ setup:
 	@if [ ! -f .env ]; then \
 		cp .env.example .env; \
 		echo "Created .env from .env.example"; \
-		echo "Please edit .env and add your CLAUDE_API_KEY"; \
+		echo "Please edit .env and add your GEMINI_API_KEY"; \
 	fi
 	@mkdir -p ssl
 	@echo "Setup complete. Run 'make up' to start services."

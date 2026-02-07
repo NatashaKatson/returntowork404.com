@@ -1,4 +1,4 @@
-package claude
+package gemini
 
 import (
 	"bytes"
@@ -6,13 +6,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"time"
 )
 
 const (
-	claudeAPIURL = "https://api.anthropic.com/v1/messages"
-	claudeModel  = "claude-sonnet-4-20250514"
+	geminiAPIURL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+	geminiModel  = "gemini-2.0-flash"
 )
 
 type Client struct {
@@ -20,30 +21,36 @@ type Client struct {
 	httpClient *http.Client
 }
 
-type claudeRequest struct {
-	Model     string    `json:"model"`
-	MaxTokens int       `json:"max_tokens"`
-	Messages  []message `json:"messages"`
+type geminiRequest struct {
+	Contents         []content         `json:"contents"`
+	GenerationConfig *generationConfig `json:"generationConfig,omitempty"`
 }
 
-type message struct {
-	Role    string `json:"role"`
-	Content string `json:"content"`
+type content struct {
+	Parts []part `json:"parts"`
 }
 
-type claudeResponse struct {
-	Content []contentBlock `json:"content"`
-	Error   *claudeError   `json:"error,omitempty"`
-}
-
-type contentBlock struct {
-	Type string `json:"type"`
+type part struct {
 	Text string `json:"text"`
 }
 
-type claudeError struct {
-	Type    string `json:"type"`
+type generationConfig struct {
+	MaxOutputTokens int `json:"maxOutputTokens"`
+}
+
+type geminiResponse struct {
+	Candidates []candidate   `json:"candidates"`
+	Error      *geminiError  `json:"error,omitempty"`
+}
+
+type candidate struct {
+	Content content `json:"content"`
+}
+
+type geminiError struct {
+	Code    int    `json:"code"`
 	Message string `json:"message"`
+	Status  string `json:"status"`
 }
 
 func NewClient(apiKey string) *Client {
@@ -56,13 +63,19 @@ func NewClient(apiKey string) *Client {
 }
 
 func (c *Client) GenerateSummary(ctx context.Context, industry, timePeriod string) (string, error) {
+	log.Printf("[Gemini] Generating summary: industry=%s, period=%s", industry, timePeriod)
 	prompt := buildPrompt(industry, timePeriod)
 
-	reqBody := claudeRequest{
-		Model:     claudeModel,
-		MaxTokens: 2048,
-		Messages: []message{
-			{Role: "user", Content: prompt},
+	reqBody := geminiRequest{
+		Contents: []content{
+			{
+				Parts: []part{
+					{Text: prompt},
+				},
+			},
+		},
+		GenerationConfig: &generationConfig{
+			MaxOutputTokens: 2048,
 		},
 	}
 
@@ -71,17 +84,20 @@ func (c *Client) GenerateSummary(ctx context.Context, industry, timePeriod strin
 		return "", fmt.Errorf("failed to marshal request: %w", err)
 	}
 
-	req, err := http.NewRequestWithContext(ctx, "POST", claudeAPIURL, bytes.NewReader(jsonBody))
+	// Gemini uses API key as query parameter
+	url := fmt.Sprintf("%s?key=%s", geminiAPIURL, c.apiKey)
+
+	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewReader(jsonBody))
 	if err != nil {
 		return "", fmt.Errorf("failed to create request: %w", err)
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("x-api-key", c.apiKey)
-	req.Header.Set("anthropic-version", "2023-06-01")
+	log.Printf("[Gemini] Sending request to Gemini API (model: %s)", geminiModel)
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
+		log.Printf("[Gemini] HTTP request failed: %v", err)
 		return "", fmt.Errorf("request failed: %w", err)
 	}
 	defer resp.Body.Close()
@@ -92,23 +108,33 @@ func (c *Client) GenerateSummary(ctx context.Context, industry, timePeriod strin
 	}
 
 	if resp.StatusCode != http.StatusOK {
+		log.Printf("[Gemini] API returned non-200 status: %d, body: %s", resp.StatusCode, string(body))
 		return "", fmt.Errorf("API error (status %d): %s", resp.StatusCode, string(body))
 	}
 
-	var claudeResp claudeResponse
-	if err := json.Unmarshal(body, &claudeResp); err != nil {
+	var geminiResp geminiResponse
+	if err := json.Unmarshal(body, &geminiResp); err != nil {
 		return "", fmt.Errorf("failed to parse response: %w", err)
 	}
 
-	if claudeResp.Error != nil {
-		return "", fmt.Errorf("Claude error: %s", claudeResp.Error.Message)
+	if geminiResp.Error != nil {
+		log.Printf("[Gemini] API error: code=%d, message=%s, status=%s",
+			geminiResp.Error.Code, geminiResp.Error.Message, geminiResp.Error.Status)
+		return "", fmt.Errorf("Gemini error: %s", geminiResp.Error.Message)
 	}
 
-	if len(claudeResp.Content) == 0 {
-		return "", fmt.Errorf("empty response from Claude")
+	if len(geminiResp.Candidates) == 0 {
+		log.Printf("[Gemini] Empty candidates in response")
+		return "", fmt.Errorf("empty response from Gemini")
 	}
 
-	return claudeResp.Content[0].Text, nil
+	if len(geminiResp.Candidates[0].Content.Parts) == 0 {
+		return "", fmt.Errorf("no content parts in Gemini response")
+	}
+
+	summary := geminiResp.Candidates[0].Content.Parts[0].Text
+	log.Printf("[Gemini] Successfully generated summary (%d characters)", len(summary))
+	return summary, nil
 }
 
 func buildPrompt(industry, timePeriod string) string {

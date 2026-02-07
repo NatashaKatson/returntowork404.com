@@ -2,11 +2,12 @@ package handlers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"slices"
 
 	"whatdidimiss/cache"
-	"whatdidimiss/claude"
+	"whatdidimiss/gemini"
 )
 
 // Valid industries - add more as needed
@@ -44,7 +45,7 @@ var timePeriodLabels = map[string]string{
 
 type APIHandler struct {
 	cache  *cache.MemoryCache
-	claude *claude.Client
+	gemini *gemini.Client
 }
 
 type CatchUpRequest struct {
@@ -64,19 +65,21 @@ type ErrorResponse struct {
 	Details string `json:"details,omitempty"`
 }
 
-func NewAPIHandler(cache *cache.MemoryCache, claude *claude.Client) *APIHandler {
+func NewAPIHandler(cache *cache.MemoryCache, gemini *gemini.Client) *APIHandler {
 	return &APIHandler{
 		cache:  cache,
-		claude: claude,
+		gemini: gemini,
 	}
 }
 
 func (h *APIHandler) CatchUp(w http.ResponseWriter, r *http.Request) {
 	var req CatchUpRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		log.Printf("[CatchUp] Invalid JSON: %v", err)
 		writeError(w, http.StatusBadRequest, "Invalid JSON", err.Error())
 		return
 	}
+	log.Printf("[CatchUp] Request: industry=%s, time_period=%s", req.Industry, req.TimePeriod)
 
 	// Validate industry
 	if !slices.Contains(validIndustries, req.Industry) {
@@ -93,6 +96,7 @@ func (h *APIHandler) CatchUp(w http.ResponseWriter, r *http.Request) {
 	// Check cache first
 	cacheKey := req.Industry + ":" + req.TimePeriod
 	if cached, err := h.cache.Get(r.Context(), cacheKey); err == nil && cached != "" {
+		log.Printf("[CatchUp] Cache hit for key: %s", cacheKey)
 		writeJSON(w, http.StatusOK, CatchUpResponse{
 			Summary:  cached,
 			Industry: industryLabels[req.Industry],
@@ -102,9 +106,10 @@ func (h *APIHandler) CatchUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Generate summary from Claude
-	summary, err := h.claude.GenerateSummary(r.Context(), industryLabels[req.Industry], timePeriodLabels[req.TimePeriod])
+	// Generate summary from Gemini
+	summary, err := h.gemini.GenerateSummary(r.Context(), industryLabels[req.Industry], timePeriodLabels[req.TimePeriod])
 	if err != nil {
+		log.Printf("[CatchUp] Failed to generate summary for %s/%s: %v", req.Industry, req.TimePeriod, err)
 		writeError(w, http.StatusInternalServerError, "Failed to generate summary", err.Error())
 		return
 	}
@@ -112,9 +117,10 @@ func (h *APIHandler) CatchUp(w http.ResponseWriter, r *http.Request) {
 	// Cache the response (7 days)
 	if err := h.cache.Set(r.Context(), cacheKey, summary); err != nil {
 		// Log but don't fail - caching is best-effort
-		// log.Printf("Failed to cache response: %v", err)
+		log.Printf("[CatchUp] Failed to cache response for key %s: %v", cacheKey, err)
 	}
 
+	log.Printf("[CatchUp] Successfully generated summary for %s/%s", req.Industry, req.TimePeriod)
 	writeJSON(w, http.StatusOK, CatchUpResponse{
 		Summary:  summary,
 		Industry: industryLabels[req.Industry],

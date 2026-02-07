@@ -10,28 +10,28 @@ import (
 	"github.com/go-chi/cors"
 
 	"whatdidimiss/cache"
-	"whatdidimiss/claude"
+	"whatdidimiss/gemini"
 	"whatdidimiss/handlers"
 )
 
 func main() {
 	// Load configuration from environment
 	port := getEnv("PORT", "8080")
-	claudeAPIKey := os.Getenv("CLAUDE_API_KEY")
+	geminiAPIKey := os.Getenv("GEMINI_API_KEY")
 
-	if claudeAPIKey == "" {
-		log.Fatal("CLAUDE_API_KEY environment variable is required")
+	if geminiAPIKey == "" {
+		log.Fatal("GEMINI_API_KEY environment variable is required")
 	}
 
 	// Initialize in-memory cache
 	memCache := cache.NewMemoryCache()
 	defer memCache.Close()
 
-	// Initialize Claude client
-	claudeClient := claude.NewClient(claudeAPIKey)
+	// Initialize Gemini client
+	geminiClient := gemini.NewClient(geminiAPIKey)
 
 	// Initialize API handler
-	apiHandler := handlers.NewAPIHandler(memCache, claudeClient)
+	apiHandler := handlers.NewAPIHandler(memCache, geminiClient)
 
 	// Setup router
 	r := chi.NewRouter()

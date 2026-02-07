@@ -12,7 +12,7 @@ returntowork404.com is a humorous landing page for parents returning to work aft
 ## Build & Run Commands
 
 ```bash
-make dev          # Run Go backend locally (needs CLAUDE_API_KEY env var)
+make dev          # Run Go backend locally (needs GEMINI_API_KEY env var)
 make build        # Build Docker images
 make up           # Start all services (reproxy + api)
 make down         # Stop all services
@@ -21,15 +21,15 @@ make test         # Run Go tests: go test -v ./...
 make logs         # Tail Docker logs
 ```
 
-Local dev requires: `export CLAUDE_API_KEY=<key>`.
+Local dev requires: `export GEMINI_API_KEY=<key>`.
 
 ## Architecture
 
 The Go backend (module name: `whatdidimiss`) uses chi router and has three packages:
 
 - **`main.go`** — HTTP server setup, chi router with middleware (logger, recoverer, CORS, gzip). Serves `static/` files and mounts `/api` routes.
-- **`handlers/`** — API handler with `POST /api/catchup` and `GET /api/health`. Validates industry/time_period against hardcoded allowlists, checks in-memory cache, falls back to Claude API. Cache key format: `{industry}:{time_period}`.
-- **`claude/`** — HTTP client for Anthropic Messages API. Builds a prompt from industry + time period and returns the text response.
+- **`handlers/`** — API handler with `POST /api/catchup` and `GET /api/health`. Validates industry/time_period against hardcoded allowlists, checks in-memory cache, falls back to Gemini API. Cache key format: `{industry}:{time_period}`.
+- **`gemini/`** — HTTP client for Google Gemini API. Builds a prompt from industry + time period and returns the text response.
 - **`cache/`** — In-memory cache with Get/Set/Close. TTL is 7 days. Cache is lost on server restart.
 
 Production uses Docker Compose with two services: **reproxy** (reverse proxy with auto Let's Encrypt SSL, serves static files, proxies `/api/*`) and **api** (Go binary).
@@ -52,6 +52,6 @@ Multi-stage `Dockerfile`: builds with `golang:1.22-alpine`, runs on `alpine:3.19
 
 | Variable | Required | Default |
 |----------|----------|---------|
-| `CLAUDE_API_KEY` | Yes | — |
+| `GEMINI_API_KEY` | Yes | — |
 | `PORT` | No | 8080 |
 | `ACME_EMAIL` | No | admin@returntowork404.com |
