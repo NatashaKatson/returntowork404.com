@@ -1,4 +1,5 @@
 .PHONY: help build up down restart logs clean dev test update status setup
+export DOTENV := .env
 
 # Default target
 help:
@@ -50,11 +51,7 @@ clean:
 # Local development (requires Go)
 dev:
 	go get whatdidimiss
-	@if [ -z "$$GEMINI_API_KEY" ]; then \
-		echo "Error: GEMINI_API_KEY not set"; \
-		echo "Run: export GEMINI_API_KEY=your-key"; \
-		exit 1; \
-	fi
+	@set -o allexport; [ -f $(DOTENV) ] && source $(DOTENV); set +o allexport; \
 	go run .
 
 # Run tests
