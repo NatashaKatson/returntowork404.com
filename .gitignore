@@ -1,0 +1,35 @@
+# Binaries
+server
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Environment
+.env
+.env.*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
+
+# SSL certs (local/dev)
+ssl/
+
+# Test and coverage
+*.test
+coverage.out
+coverage.html
+
+# Go build cache
+tmp/

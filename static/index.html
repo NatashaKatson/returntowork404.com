@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Did I Miss?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>What Did I Miss?</h1>
+            <p class="subtitle">Catch up on what happened while you were away</p>
+        </header>
+
+        <main>
+            <div class="card">
+                <form id="catchup-form">
+                    <div class="form-group">
+                        <label for="industry">INDUSTRY / TOPIC</label>
+                        <select id="industry" name="industry" required>
+                            <option value="" disabled>Select your industry...</option>
+                            <option value="software-development">Software Development</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="legal">Legal</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="time-period">HOW LONG WERE YOU AWAY?</label>
+                        <select id="time-period" name="time_period" required>
+                            <option value="" disabled>Select time period...</option>
+                            <option value="6-months">6 months</option>
+                            <option value="1-year">1 year</option>
+                            <option value="2-3-years">2-3 years</option>
+                            <option value="5-years">5+ years</option>
+                            <option value="10-years">10+ years</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" id="submit-btn">
+                        <span class="btn-text">CATCH ME UP!</span>
+                        <span class="btn-loading" style="display: none;">
+                            <span class="spinner"></span>
+                            Generating...
+                        </span>
+                    </button>
+                </form>
+
+                <div id="error-message" class="error-message" style="display: none;"></div>
+            </div>
+
+            <div id="result-card" class="card result-card" style="display: none;">
+                <div class="result-header">
+                    <h2>Your <span id="result-industry"></span> Catchup</h2>
+                    <p class="result-period">Covering the last <span id="result-period"></span></p>
+                    <span id="cached-badge" class="cached-badge" style="display: none;">Cached</span>
+                </div>
+                <div id="result-content" class="result-content"></div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Powered by Claude AI</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

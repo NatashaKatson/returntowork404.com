@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  # Reproxy - reverse proxy with automatic HTTPS via Let's Encrypt
+  reproxy:
+    image: umputun/reproxy:latest
+    container_name: reproxy
+    restart: always
+    ports:
+      - "80:8080"
+      - "443:8443"
+    volumes:
+      - ./ssl:/srv/var/ssl
+      - ./static:/srv/static:ro
+    environment:
+      - TZ=UTC
+      - SSL_TYPE=auto
+      - SSL_ACME_LOCATION=/srv/var/ssl
+      - SSL_ACME_EMAIL=${ACME_EMAIL:-admin@returntowork404.com}
+      - SSL_ACME_FQDN=returntowork404.com,www.returntowork404.com
+      - GZIP=true
+      - MAX_SIZE=0
+      - TIMEOUT_READ=30s
+      - TIMEOUT_WRITE=60s
+    command: >
+      --static.enabled
+      --static.rule="*,^/api/(.*),http://api:8080/api/$$1"
+      --static.rule="*,/(.+\\.(css|js|ico|png|jpg|svg|woff2?|ttf)),assets:///srv/static/$$1"
+      --static.rule="*,/(.*),assets:///srv/static/index.html"
+    depends_on:
+      - api
+
+  # Go API backend
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: whatdidimiss-api
+    restart: always
+    environment:
+      - PORT=8080
+      - CLAUDE_API_KEY=${CLAUDE_API_KEY}
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
