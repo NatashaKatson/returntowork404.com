@@ -3,26 +3,898 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>What Did I Miss?</title>
+    <title>Return to Work - A Survival Guide for Returning Parents</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700&family=Space+Grotesk:wght@300;400;500;600;700&family=Fredoka+One&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Force font loading */
+        @font-face {
+            font-family: 'Space Grotesk';
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Playfair Display';
+            font-display: swap;
+        }
+    </style>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1ZKTF6J12Z"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-1ZKTF6J12Z');
+    </script>
+
+    <style>
+        /* ============================================
+           LANDING PAGE STYLES
+           ============================================ */
+        :root {
+            --coral: #E07B54;
+            --coral-light: #E99A7D;
+            --cream: #F8F5F0;
+            --cream-dark: #F0EBE3;
+            --charcoal: #2D2420;
+            --sage: #9DB4A0;
+            --muted: #8B8680;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--cream);
+            color: var(--charcoal);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .scale-in.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .line-expand {
+            transform: scaleX(0);
+            transition: transform 0.6s ease-out;
+        }
+
+        .line-expand.visible {
+            transform: scaleX(1);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 5rem 1.5rem;
+            position: relative;
+            overflow: hidden;
+            background-color: var(--cream);
+        }
+
+        /* Floating Decorative Circles */
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .circle-coral {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(224, 123, 84, 0.2);
+            top: 80px;
+            left: 40px;
+            animation: float-up 4s ease-in-out infinite;
+        }
+
+        .circle-cream {
+            width: 128px;
+            height: 128px;
+            background-color: rgba(245, 230, 211, 0.5);
+            bottom: 128px;
+            right: 64px;
+            animation: float-down 5s ease-in-out infinite;
+        }
+
+        .circle-sage {
+            width: 32px;
+            height: 32px;
+            background-color: rgba(157, 180, 160, 0.4);
+            top: 160px;
+            right: 80px;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes float-up {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes float-down {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 64rem;
+            margin: 0 auto;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: rgba(224, 123, 84, 0.1);
+            color: var(--coral);
+            border-radius: 50px;
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out 0.2s forwards;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 .line1 {
+            display: block;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out 0.3s forwards;
+        }
+
+        .hero h1 .line2 {
+            display: block;
+            color: var(--coral);
+            font-style: italic;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out 0.5s forwards;
+        }
+
+        .hero .subtitle {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: clamp(1.125rem, 3vw, 1.5rem);
+            font-weight: 400;
+            color: var(--muted);
+            max-width: 42rem;
+            margin: 0 auto;
+            line-height: 1.6;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out 0.8s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            animation: fadeIn 0.6s ease-out 1.2s forwards;
+        }
+
+        .mouse {
+            width: 24px;
+            height: 40px;
+            border: 2px solid rgba(139, 134, 128, 0.3);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            padding-top: 8px;
+            animation: bounce 1.5s ease-in-out infinite;
+        }
+
+        .mouse-dot {
+            width: 6px;
+            height: 10px;
+            background-color: var(--coral);
+            border-radius: 3px;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(8px); }
+        }
+
+        /* Crisis Section */
+        .crisis-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 5rem 1.5rem;
+            position: relative;
+            overflow: hidden;
+            background-color: var(--cream-dark);
+        }
+
+        /* Floating AI Elements */
+        .floating-ai {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .ai-element {
+            position: absolute;
+            font-size: 2.5rem;
+            color: var(--charcoal);
+            user-select: none;
+            animation: float-rotate 5s ease-in-out infinite;
+        }
+
+        @keyframes float-rotate {
+            0%, 100% {
+                opacity: 0.3;
+                transform: rotate(0deg);
+            }
+            50% {
+                opacity: 0.7;
+                transform: rotate(10deg);
+            }
+        }
+
+        .crisis-content {
+            position: relative;
+            z-index: 1;
+            max-width: 64rem;
+            margin: 0 auto;
+        }
+
+        .crisis-section .question {
+            font-size: clamp(1.25rem, 4vw, 1.875rem);
+            color: var(--muted);
+            margin-bottom: 2rem;
+        }
+
+        .crisis-section h2 {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 700;
+            margin-bottom: 3rem;
+        }
+
+        .crisis-section h2 .ai-text {
+            color: var(--coral);
+        }
+
+        .speech-bubble {
+            background: white;
+            padding: 2rem 3rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px -4px rgba(45, 36, 32, 0.1);
+            max-width: 42rem;
+            margin: 0 auto;
+        }
+
+        .speech-bubble p {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            font-style: italic;
+            color: var(--charcoal);
+            line-height: 1.4;
+        }
+
+        /* Hope Section */
+        .hope-section {
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 5rem 1.5rem;
+            background-color: var(--cream);
+        }
+
+        .hope-section .label {
+            font-size: 1rem;
+            letter-spacing: 0.2em;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .hope-section h2 {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 700;
+        }
+
+        .hope-line {
+            width: 96px;
+            height: 4px;
+            background: linear-gradient(135deg, var(--coral) 0%, var(--coral-light) 100%);
+            margin: 2rem auto 0;
+            border-radius: 2px;
+            transform-origin: center;
+        }
+
+        /* Punchline Section */
+        .punchline-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 5rem 1.5rem 2rem;
+            background-color: var(--charcoal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Dramatic background pattern */
+        .bg-pattern {
+            position: absolute;
+            inset: 0;
+            opacity: 0.05;
+            background-image: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 50px,
+                var(--coral) 50px,
+                var(--coral) 51px
+            );
+        }
+
+        .punchline-content {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .punchline-section h2 {
+            font-size: clamp(3.5rem, 15vw, 10rem);
+            font-weight: 900;
+            color: var(--cream);
+            line-height: 1;
+            margin-bottom: 2rem;
+            letter-spacing: -0.02em;
+        }
+
+        .punchline-line {
+            height: 4px;
+            background-color: var(--coral);
+            max-width: 28rem;
+            margin: 0 auto 3rem;
+            transform-origin: center;
+        }
+
+        .punchline-section .good-luck {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.875rem, 6vw, 3rem);
+            color: var(--coral);
+            font-style: italic;
+        }
+
+        .sparkles {
+            font-size: 3.5rem;
+            margin-top: 3rem;
+        }
+
+        /* Staggered animations for punchline */
+        .punchline-section h2.visible {
+            animation: scaleSpring 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes scaleSpring {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .punchline-line.visible {
+            animation: expandWidth 0.8s ease-out 0.6s forwards;
+        }
+
+        @keyframes expandWidth {
+            from {
+                opacity: 0;
+                width: 0;
+            }
+            to {
+                opacity: 1;
+                width: 100%;
+            }
+        }
+
+        .good-luck.visible {
+            animation: fadeIn 0.6s ease-out 1s forwards;
+        }
+
+        .sparkles.visible {
+            animation: fadeIn 0.6s ease-out 1.4s forwards;
+        }
+
+        /* Initially hide animated elements */
+        .punchline-section h2,
+        .punchline-line,
+        .good-luck,
+        .sparkles {
+            opacity: 0;
+        }
+
+        /* ============================================
+           TRANSITION BRIDGE
+           ============================================ */
+        .section-bridge {
+            height: 100px;
+            background: linear-gradient(180deg, var(--charcoal) 0%, #FFF5E6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bridge-line {
+            width: 200px;
+            height: 2px;
+            background: var(--coral);
+            opacity: 0.3;
+        }
+
+        /* ============================================
+           APP SECTION STYLES
+           ============================================ */
+        .app-section {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #FFF5E6 0%, #FFE8CC 100%);
+            padding: 40px 20px;
+        }
+
+        .app-section .app-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .app-section .app-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .app-section .app-header h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 3rem;
+            color: #E85D04;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.05);
+        }
+
+        .app-section .app-subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        .app-section .app-card {
+            background: #fff;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 24px;
+        }
+
+        .app-section .form-group {
+            margin-bottom: 24px;
+        }
+
+        .app-section label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            color: #E85D04;
+            margin-bottom: 10px;
+        }
+
+        .app-section select {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 1rem;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            border: 2px solid #E8E8E8;
+            border-radius: 12px;
+            background: #fff;
+            color: #333;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .app-section select:focus {
+            outline: none;
+            border-color: #E85D04;
+            box-shadow: 0 0 0 3px rgba(232, 93, 4, 0.1);
+        }
+
+        .app-section select:disabled {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+        }
+
+        .app-section button[type="submit"] {
+            width: 100%;
+            padding: 18px 32px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: 'Fredoka One', cursive;
+            letter-spacing: 0.05em;
+            color: #fff;
+            background: linear-gradient(135deg, #FF7B54 0%, #E85D04 100%);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 8px;
+        }
+
+        .app-section button[type="submit"]:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(232, 93, 4, 0.35);
+        }
+
+        .app-section button[type="submit"]:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .app-section button[type="submit"]:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .app-section .spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .app-section .error-message {
+            margin-top: 16px;
+            padding: 16px;
+            background: #FEE2E2;
+            border-left: 4px solid #EF4444;
+            border-radius: 8px;
+            color: #991B1B;
+            font-size: 0.95rem;
+        }
+
+        .app-section .result-card {
+            animation: resultFadeIn 0.4s ease;
+        }
+
+        @keyframes resultFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .app-section .result-header {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #FFF5E6;
+            position: relative;
+        }
+
+        .app-section .result-header h2 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.5rem;
+            color: #E85D04;
+            margin-bottom: 4px;
+        }
+
+        .app-section .result-period {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .app-section .cached-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #FFF5E6;
+            color: #E85D04;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.05em;
+        }
+
+        .app-section .result-content {
+            line-height: 1.7;
+            color: #444;
+        }
+
+        .app-section .result-content h2,
+        .app-section .result-content h3 {
+            color: #E85D04;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .app-section .result-content h2:first-child,
+        .app-section .result-content h3:first-child {
+            margin-top: 0;
+        }
+
+        .app-section .result-content p {
+            margin-bottom: 12px;
+        }
+
+        .app-section .result-content ul {
+            margin: 12px 0;
+            padding-left: 24px;
+        }
+
+        .app-section .result-content li {
+            margin-bottom: 8px;
+        }
+
+        .app-section .result-content strong {
+            color: #333;
+        }
+
+        .app-section .app-footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        /* ============================================
+           MAIN FOOTER
+           ============================================ */
+        .main-footer {
+            background-color: #FFE8CC;
+            text-align: center;
+            padding: 2rem 1.5rem;
+            color: #8B8680;
+            font-size: 0.875rem;
+        }
+
+        .main-footer .bmc-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding: 0.75rem 1.5rem;
+            background-color: #FF5F5F;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .main-footer .bmc-link:hover {
+            background-color: #e54d4d;
+            transform: translateY(-2px);
+        }
+
+        /* ============================================
+           RESPONSIVE STYLES
+           ============================================ */
+        @media (max-width: 768px) {
+            .circle-coral {
+                width: 60px;
+                height: 60px;
+                top: 40px;
+                left: 20px;
+            }
+            .circle-cream {
+                width: 80px;
+                height: 80px;
+                bottom: 80px;
+                right: 20px;
+            }
+            .circle-sage {
+                width: 24px;
+                height: 24px;
+                top: 100px;
+                right: 40px;
+            }
+            .speech-bubble {
+                padding: 1.5rem 2rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .app-section .app-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .app-section .app-card {
+                padding: 24px;
+                border-radius: 16px;
+            }
+
+            .app-section .app-container {
+                padding: 0;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>What Did I Miss?</h1>
-            <p class="subtitle">Catch up on what happened while you were away</p>
-        </header>
+    <!-- ============================================
+         LANDING PAGE SECTIONS
+         ============================================ -->
 
-        <main>
-            <div class="card">
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="circle circle-coral"></div>
+        <div class="circle circle-cream"></div>
+        <div class="circle circle-sage"></div>
+
+        <div class="hero-content">
+            <span class="badge">A survival guide for returning parents</span>
+            <h1>
+                <span class="line1">Catch up after</span>
+                <span class="line2">parental leave</span>
+            </h1>
+            <p class="subtitle">Baby is out of the house (is at daycare or with a nanny) and you are back to reality...</p>
+        </div>
+
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="mouse-dot"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Crisis Section -->
+    <section class="crisis-section">
+        <div class="floating-ai" id="floatingAi"></div>
+
+        <div class="crisis-content">
+            <p class="question fade-in">...but the world has changed??</p>
+            <h2 class="fade-in"><span class="ai-text">AI</span> everywhere.</h2>
+            <div class="speech-bubble fade-in">
+                <p>Do you even have a job anymore?!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hope Section -->
+    <section class="hope-section">
+        <div class="hope-content">
+            <span class="label fade-in">Don't worry</span>
+            <h2 class="fade-in">Here's how to catch up</h2>
+            <div class="hope-line line-expand"></div>
+        </div>
+    </section>
+
+    <!-- Punchline Section -->
+    <section class="punchline-section">
+        <div class="bg-pattern"></div>
+        <div class="punchline-content">
+            <h2 class="scale-in">YOU CAN'T</h2>
+            <div class="punchline-line line-expand"></div>
+            <p class="good-luck fade-in">Good luck</p>
+            <div class="sparkles fade-in">✨</div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         TRANSITION BRIDGE
+         ============================================ -->
+    <div class="section-bridge">
+        <div class="bridge-line"></div>
+    </div>
+
+    <!-- ============================================
+         APP SECTION
+         ============================================ -->
+    <section class="app-section">
+        <div class="app-container">
+            <header class="app-header">
+                <h1>Just Kidding! Here's Actual Help</h1>
+                <p class="app-subtitle">Let me catch you up on what you missed</p>
+            </header>
+
+            <div class="app-card">
                 <form id="catchup-form">
                     <div class="form-group">
                         <label for="industry">INDUSTRY / TOPIC</label>
                         <select id="industry" name="industry" required>
-                            <option value="" disabled>Select your industry...</option>
+                            <option value="" disabled selected>Select your industry...</option>
                             <option value="software-development">Software Development</option>
                             <option value="marketing">Marketing</option>
                             <option value="healthcare">Healthcare</option>
@@ -33,7 +905,7 @@
                     <div class="form-group">
                         <label for="time-period">HOW LONG WERE YOU AWAY?</label>
                         <select id="time-period" name="time_period" required>
-                            <option value="" disabled>Select time period...</option>
+                            <option value="" disabled selected>Select time period...</option>
                             <option value="6-months">6 months</option>
                             <option value="1-year">1 year</option>
                             <option value="2-3-years">2-3 years</option>
@@ -54,7 +926,7 @@
                 <div id="error-message" class="error-message" style="display: none;"></div>
             </div>
 
-            <div id="result-card" class="card result-card" style="display: none;">
+            <div id="result-card" class="app-card result-card" style="display: none;">
                 <div class="result-header">
                     <h2>Your <span id="result-industry"></span> Catchup</h2>
                     <p class="result-period">Covering the last <span id="result-period"></span></p>
@@ -62,13 +934,175 @@
                 </div>
                 <div id="result-content" class="result-content"></div>
             </div>
-        </main>
 
-        <footer>
-            <p>Powered by Claude AI</p>
-        </footer>
-    </div>
+            <footer class="app-footer">
+                <p>Powered by Gemini AI</p>
+            </footer>
+        </div>
+    </section>
 
-    <script src="app.js"></script>
+    <!-- ============================================
+         MAIN FOOTER
+         ============================================ -->
+    <footer class="main-footer">
+        <a href="https://www.buymeacoffee.com/natashakatson" target="_blank" class="bmc-link">☕ Buy me a coffee</a>
+        <p>Made with 💕 and tiredness</p>
+    </footer>
+
+    <!-- ============================================
+         JAVASCRIPT
+         ============================================ -->
+    <script>
+        // ============================================
+        // LANDING PAGE JS
+        // ============================================
+        (function() {
+            // Create floating AI elements
+            const floatingAi = document.getElementById('floatingAi');
+            const aiSymbols = ['🤖', 'AI', 'GPT', '🧠', '⚡'];
+
+            for (let i = 0; i < 20; i++) {
+                const span = document.createElement('span');
+                span.className = 'ai-element';
+                span.textContent = aiSymbols[Math.floor(Math.random() * aiSymbols.length)];
+                span.style.left = `${Math.random() * 100}%`;
+                span.style.top = `${Math.random() * 100}%`;
+                span.style.animationDelay = `${Math.random() * 2}s`;
+                span.style.animationDuration = `${3 + Math.random() * 2}s`;
+                floatingAi.appendChild(span);
+            }
+
+            // Intersection Observer for scroll animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '-100px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all animated elements
+            document.querySelectorAll('.fade-in, .scale-in, .line-expand').forEach(el => {
+                observer.observe(el);
+            });
+        })();
+
+        // ============================================
+        // APP JS
+        // ============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('catchup-form');
+            const submitBtn = document.getElementById('submit-btn');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const btnLoading = submitBtn.querySelector('.btn-loading');
+            const errorMessage = document.getElementById('error-message');
+            const resultCard = document.getElementById('result-card');
+            const resultIndustry = document.getElementById('result-industry');
+            const resultPeriod = document.getElementById('result-period');
+            const resultContent = document.getElementById('result-content');
+            const cachedBadge = document.getElementById('cached-badge');
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const industry = document.getElementById('industry').value;
+                const timePeriod = document.getElementById('time-period').value;
+
+                if (!industry || !timePeriod) {
+                    showError('Please select both an industry and time period.');
+                    return;
+                }
+
+                // Show loading state
+                setLoading(true);
+                hideError();
+                resultCard.style.display = 'none';
+
+                try {
+                    const response = await fetch('/api/catchup', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            industry: industry,
+                            time_period: timePeriod,
+                        }),
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Something went wrong');
+                    }
+
+                    // Display results
+                    resultIndustry.textContent = data.industry;
+                    resultPeriod.textContent = data.period;
+                    resultContent.innerHTML = formatMarkdown(data.summary);
+                    cachedBadge.style.display = data.cached ? 'inline-block' : 'none';
+                    resultCard.style.display = 'block';
+
+                    // Scroll to results
+                    resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                } catch (error) {
+                    showError(error.message || 'Failed to generate summary. Please try again.');
+                } finally {
+                    setLoading(false);
+                }
+            });
+
+            function setLoading(loading) {
+                submitBtn.disabled = loading;
+                btnText.style.display = loading ? 'none' : 'inline';
+                btnLoading.style.display = loading ? 'inline-flex' : 'none';
+
+                document.getElementById('industry').disabled = loading;
+                document.getElementById('time-period').disabled = loading;
+            }
+
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+            }
+
+            function hideError() {
+                errorMessage.style.display = 'none';
+            }
+
+            // Basic markdown to HTML converter
+            function formatMarkdown(text) {
+                return text
+                    // Headers
+                    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+                    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+                    .replace(/^# (.*$)/gim, '<h2>$1</h2>')
+                    // Bold
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    // Bullet points
+                    .replace(/^\s*[-*]\s+(.*)$/gim, '<li>$1</li>')
+                    // Wrap consecutive li elements in ul
+                    .replace(/(<li>.*<\/li>\n?)+/g, (match) => `<ul>${match}</ul>`)
+                    // Paragraphs (double newlines)
+                    .replace(/\n\n/g, '</p><p>')
+                    // Single newlines in non-list context
+                    .replace(/([^>])\n([^<])/g, '$1<br>$2')
+                    // Wrap in paragraph
+                    .replace(/^(.*)$/, '<p>$1</p>')
+                    // Clean up empty paragraphs
+                    .replace(/<p><\/p>/g, '')
+                    .replace(/<p>\s*<(h2|h3|ul)/g, '<$1')
+                    .replace(/<\/(h2|h3|ul)>\s*<\/p>/g, '</$1>');
+            }
+        });
+    </script>
+
 </body>
 </html>
